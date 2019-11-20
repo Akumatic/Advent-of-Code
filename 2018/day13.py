@@ -1,4 +1,4 @@
-""" https://adventofcode.com/2018/day/5 """
+""" https://adventofcode.com/2018/day/13 """
 
 def readFile(test1 = False, test2 = False):
     import os.path as p
