@@ -1,13 +1,8 @@
 """ https://adventofcode.com/2018/day/4 """
 
 def readFile():
-    import os.path as p
-    dName = p.dirname(__file__)
-    fName = p.basename(__file__).split(".")[0]
-
-    with open(p.join(dName, "input", f"{fName}.txt"), "r") as f:
+    with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         l = [line[:-1] for line in f.readlines()]
-
     l.sort()
     return l
 

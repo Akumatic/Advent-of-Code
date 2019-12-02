@@ -1,5 +1,5 @@
 # 2019 Day 2: 1202 Program Alarm
-
+Copyright (c) Eric Wastl
 #### [Direct Link](https://adventofcode.com/2019/day/2)
 
 ## Part 1

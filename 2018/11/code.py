@@ -1,11 +1,7 @@
 """ https://adventofcode.com/2018/day/11 """
 
 def readFile():
-    import os.path as p
-    dName = p.dirname(__file__)
-    fName = p.basename(__file__).split(".")[0]
-
-    with open(p.join(dName, "input", f"{fName}.txt"), "r") as f:
+    with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return int(f.read())
 
 def getPowerlevel(x, y, serial):
@@ -61,7 +57,7 @@ def getBiggestFieldSAT(sat, size):
 
 def part1(value):
     grid = createGrid(value)
-    return getBiggestField(grid, 3)
+    return getBiggestField(grid, 3)[0]
 
 def part2(value):
     grid = createGrid(value)

@@ -1,11 +1,7 @@
 """ https://adventofcode.com/2018/day/9 """
 
 def readFile():
-    import os.path as p
-    dName = p.dirname(__file__)
-    fName = p.basename(__file__).split(".")[0]
-
-    with open(p.join(dName, "input", f"{fName}.txt"), "r") as f:
+    with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         data = f.read().split(" ")
         return (int(data[0]), int(data[6]))
 

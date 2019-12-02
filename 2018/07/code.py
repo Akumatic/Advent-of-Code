@@ -1,12 +1,8 @@
 """ https://adventofcode.com/2018/day/5 """
 
 def readFile():
-    import os.path as p
-    dName = p.dirname(__file__)
-    fName = p.basename(__file__).split(".")[0]
-    
     nodes = {}
-    with open(p.join(dName, "input", f"{fName}.txt"), "r") as f:
+    with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         lines =  [(line[5:6], line[36:37]) for line in f.readlines()]
     for l in lines:
         if l[0] not in nodes:

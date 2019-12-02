@@ -1,5 +1,5 @@
 # 2019 Day 1: The Tyranny of the Rocket Equation 
-
+Copyright (c) Eric Wastl
 #### [Direct Link](https://adventofcode.com/2019/day/1)
 
 ## Part 1
