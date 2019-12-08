@@ -1,5 +1,5 @@
 # Advent of Code - 2018
-
+Copyright (c) Eric Wastl
 #### [Direct Link](https://adventofcode.com/2018)
 
 ## Intro 
