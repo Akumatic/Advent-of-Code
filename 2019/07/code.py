@@ -1,6 +1,6 @@
 """ https://adventofcode.com/2019/day/7 """
 
-import queue, threading
+import queue, itertools
 
 class InvalidOpcode(Exception):
     pass
@@ -10,14 +10,12 @@ def readFile():
         return [int(num) for num in f.readline().split(",")]
 
 class Amp:
-    def __init__(self, id, vals, phase, ownQueue, nextQueue):
-        self.id = id
+    def __init__(self, vals, phase):
         self.vals = vals.copy()
         self.phase = phase
-        self.output = 0
-        self.queue = ownQueue
-        self.next = nextQueue
-        self.phased = False
+        self.queue = queue.Queue()
+        self.output, self.prev, self.next = None, None, None
+        self.phased, self.term = False, False
         self.i = 0
 
     def run(self):
@@ -29,7 +27,7 @@ class Amp:
             # 0 Parameter
             if opcode[0] == 99:
                 self.output = self.vals[0]
-                self.next.put(self.output)
+                self.term = True
                 break
 
             # 1 : Addition
@@ -52,7 +50,13 @@ class Amp:
             # 1 parameter
             elif opcode[0] == 3: 
                 if self.phased:
-                    self.vals[self.vals[self.i+1]] = self.queue.get()
+                    try:
+                        if self.prev and self.prev.output:
+                            self.vals[self.vals[self.i+1]] =  self.prev.output
+                        else:
+                            self.vals[self.vals[self.i+1]] =  self.queue.get(block=False)
+                    except queue.Empty:
+                        break
                 else:
                     self.vals[self.vals[self.i+1]], self.phased = self.phase, True
                 self.i += 2
@@ -62,7 +66,8 @@ class Amp:
             elif opcode[0] == 4: 
                 a = self.vals[self.i+1] if opcode[1] == 0 else self.i+1
                 self.vals[0] = self.vals[a]
-                self.next.put(self.vals[0])
+                if self.next:
+                    self.next.queue.put(self.vals[0])
                 self.i += 2
 
             # 5 : Jump-if-true
@@ -91,27 +96,32 @@ class Amp:
                 raise InvalidOpcode
 
 def amplify(vals : list, phaseSettings : tuple):
-    q = [queue.Queue() for i in range(5)]
-    amps = [Amp(i, vals, phaseSettings[i], q[i], q[(i+1) % 5]) for i in range(5)]
+    amps = [Amp(vals, phaseSettings[i]) for i in range(5)]
     amps[0].queue.put(0)
-    if phaseSettings[0] < 5:
-        amps[4].next = queue.Queue()
-    threads = [threading.Thread(target=amps[i].run()) for i in range(5)]
+    
+    for i in range(1, 4):
+        amps[i].next = amps[i+1]
+        amps[i].prev = amps[i-1]
 
-    for thread in threads:
-        thread.start()
+    amps[0].next = amps[1]
+    amps[4].prev = amps[3]
 
-    for thread in threads:
-        thread.join()
+    if phaseSettings[0] > 4:
+        amps[4].next = amps[0]
+        amps[0].prev = amps[4]
 
-    return amps[4].next.get()
+    while not (amps[0].term and amps[1].term and amps[2].term and amps[3].term and amps[4].term):
+        for i in range(5):
+            if not amps[i].term:
+                amps[i].run()
+
+    return amps[4].output
 
 def part1(vals : list):
-    return max([amplify(vals, (a, b, c, d, e)) for a in range(5) for b in range(5) for c in range(5) for d in range(5)
-        for e in range(5) if b != a and c not in [a, b] and d not in [a, b, c] and e not in [a, b, c, d]])
+    return max([amplify(vals, (a, b, c, d, e)) for a,b,c,d,e in itertools.permutations([x for x in range(5)])])
 
 def part2(vals : list):
-    pass
+    return max([amplify(vals, (a, b, c, d, e)) for a,b,c,d,e in itertools.permutations([x for x in range(5,10)])])
 
 def test():
     vals = [3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0]
@@ -124,7 +134,11 @@ def test():
     assert amplify(vals, (1,0,4,3,2)) == 65210
     vals = [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,
         27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5]
-    #print(amplify(vals, (9,8,7,6,5)))
+    assert amplify(vals, (9,8,7,6,5)) == 139629729
+    vals = [3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,
+        -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,
+        53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10]
+    assert amplify(vals, (9,7,8,5,6)) == 18216
      
 if __name__ == "__main__":
     test()
