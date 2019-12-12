@@ -1,7 +1,6 @@
 """ https://adventofcode.com/2019/day/12 """
 
 from itertools import combinations
-from copy import deepcopy
 
 def readFile():
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
@@ -32,13 +31,19 @@ class Moon:
         kin = abs(self.vel[0]) + abs(self.vel[1]) + abs(self.vel[2])
         return pot, kin, pot * kin
 
-def simulate(moons : list, steps):
+def simulate(moons : list, steps = 1):
     for i in range(steps):
         for m, n in list(combinations(moons, 2)):
             m.changeGravity(n)
         
         for moon in moons:
             moon.move()
+
+def lcm(x, y):
+    tmp = x * y
+    while y:
+        x, y = y, x % y
+    return tmp // x
         
 def part1(vals: list):
     moons = [Moon((val[0], val[1], val[2])) for val in vals]
@@ -46,7 +51,19 @@ def part1(vals: list):
     return sum([moon.energy()[2] for moon in moons])
 
 def part2(vals: list):
-    pass
+    dims = [0, 0, 0]
+    for i in range(3):
+        moons = [Moon((val[0], val[1], val[2])) for val in vals]
+        oPos = [moons[0].pos[i], moons[1].pos[i], moons[2].pos[i], moons[3].pos[i]]
+
+        while 1:
+            simulate(moons)
+            dims[i] += 1
+            if [moons[0].pos[i], moons[1].pos[i], moons[2].pos[i], moons[3].pos[i]] == oPos and \
+                [moons[0].vel[i], moons[1].vel[i], moons[2].vel[i], moons[3].vel[i]] == [0, 0, 0, 0]:
+                break
+
+    return lcm(dims[0], lcm(dims[1], dims[2]))
 
 def test():
     moons = [Moon(p) for p in ((-1,0,2), (2,-10,-7), (4,-8,8), (3,5,-1))]
@@ -59,6 +76,8 @@ def test():
     moons = [Moon(p) for p in ((-8,-10,0), (5,5,10), (2,-7,3), (9,-8,-3))]    
     simulate(moons,100)
     assert sum([moon.energy()[2] for moon in moons]) == 1940
+    assert part2(((-1,0,2),(2,-10,-7),(4,-8,8),(3,5,-1))) == 2772
+    assert part2(((-8,-10,0),(5,5,10),(2,-7,3),(9,-8,-3))) == 4686774924
 
 if __name__ == "__main__":
     test()
