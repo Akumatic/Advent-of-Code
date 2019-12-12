@@ -36,8 +36,46 @@ def part1(vals: list):
                 mx, my, max = x, y, tmp
     return mx, my, max
 
+def selectStart(indices, current):
+    i = 0
+    while indices[i] < current:
+        i += 1
+    return i + 1
+    
+
 def part2(vals: list, x: int, y: int, count):
-    pass
+    asteroids = getAsteroids(vals, x, y)
+    d = dict()
+    for asteroid in asteroids:
+        if str(asteroid.angle) in d:
+            d[str(asteroid.angle)].append(asteroid)
+        else:
+            d[str(asteroid.angle)] = [asteroid]
+
+    for a in d:
+        d[a].sort(key=lambda x:x.dist, reverse=True)
+
+    idx = list(set([asteroid.angle for asteroid in asteroids]))
+    idx.sort()
+    
+    laser = (selectStart(idx, -pi/2) - 1) % len(idx)
+    destroyed = []
+    id = str(idx[laser])
+    for i in range(count):
+        cur = d[id].pop()
+        destroyed.append((cur.x, cur.y))
+        if not len(d[id]):
+            d.pop(id)
+        if i < count - 1:
+            while 1:
+                laser = (laser + 1) % len(idx)
+                id = str(idx[laser])
+                if id not in d:
+                    continue
+                if len(d[str(idx[laser])]):
+                    break
+
+    return destroyed
 
 def test():
     assert part1([".#..#",".....","#####","....#","...##"]) == (3, 4, 8)
@@ -47,15 +85,20 @@ def test():
         "..#...##..","..##....##","......#...",".####.###."]) == (1,2,35)
     assert part1([".#..#..###","####.###.#","....###.#.","..###.##.#","##.##.#.#.","....###..#",
         "..#.#..#.#","#..#.#.###",".##...##.#",".....#.#.."]) == (6,3,41)
-    assert part1([".#..##.###...#######","##.############..##.",".#.######.########.#",".###.#######.####.#.",
+    tmp = [".#..##.###...#######","##.############..##.",".#.######.########.#",".###.#######.####.#.",
         "#####.##.#.##.###.##","..#####..#.#########","####################","#.####....###.#.#.##",
         "##.#################","#####.##.###..####..","..######..##.#######","####.##.####...##..#",
         ".#####..#.######.###","##...#.##########...","#.##########.#######",".####.#.###.###.#.##",
-        "....##.##.###..#####",".#.#.###########.###","#.#.#.#####.####.###","###.##.####.##.#..##"]) == (11,13,210)
+        "....##.##.###..#####",".#.#.###########.###","#.#.#.#####.####.###","###.##.####.##.#..##"]
+    assert part1(tmp) == (11,13,210)
+    assert part2([".#....#####...#..","##...##.#####..##","##...#...#.#####.","..#.....X...###..",
+        "..#.#.....#....##"], 8, 3, 4*9)[-1] == (14, 3)
+    assert part2(tmp, 11,13, 299)[199] == (8,2)
     
 if __name__ == "__main__":
     test()
     vals = readFile()
     p1 = part1(vals)
     print(f"Part 1: {p1[2]}")
-    print(f"Part 2: {part2(vals, p1[0], p1[1], 200)}")
+    p2 = part2(vals, p1[0], p1[1], 200)
+    print(f"Part 2: {p2[-1][0] * 100 + p2[-1][1]}")
