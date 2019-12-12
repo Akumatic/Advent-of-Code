@@ -11,3 +11,21 @@ Copyright (c) Eric Wastl
 "The bad news is that we are detecting roughly **fifty** anomalies throughout time; the device will indicate fixed anomalies with **stars**. The other bad news is that we only have one device and you're the best person for the job! Good lu--" She taps a button on the device and you suddenly feel like you're falling. To save Christmas, you need to get all **fifty stars** by December 25th.
 
 Collect stars by solving puzzles. Two puzzles will be made available on each day in the Advent calendar; the second puzzle is unlocked when you complete the first. Each puzzle grants **one star**. Good luck!
+
+## Overview
+
+| Day | Part 1 | Part 2 ||Day | Part 1 | Part 2 |
+| --- | --- | --- |---| --- | --- | --- |
+| 01 | :white_check_mark: | :white_check_mark: || 02 | :white_check_mark: | :white_check_mark: |
+| 03 | :white_check_mark: | :white_check_mark: || 04 | :white_check_mark: | :white_check_mark: |
+| 05 | :white_check_mark: | :white_check_mark: || 06 | :white_check_mark: | :white_check_mark: |
+| 07 | :white_check_mark: | :white_check_mark: || 08 | :white_check_mark: | :white_check_mark: |
+| 09 | :white_check_mark: | :white_check_mark: || 10 | :white_check_mark: | :white_check_mark: |
+| 11 | :white_check_mark: | :white_check_mark: || 12 | :white_check_mark: | :white_check_mark: |
+| 13 | :white_check_mark: | :white_check_mark: || 14 | :white_check_mark: | :white_check_mark: |
+| 15 |  |  || 16 |  |  |
+| 17 |  |  || 18 |  |  |
+| 19 |  |  || 20 |  |  |
+| 21 |  |  || 22 |  |  |
+| 23 |  |  || 24 |  |  |
+| 25 |  |  |||||
