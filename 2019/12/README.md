@@ -1,4 +1,4 @@
-# 2019 Day 12: Monitoring Station
+# 2019 Day 12: The N-Body Problem 
 Copyright (c) Eric Wastl
 #### [Direct Link](https://adventofcode.com/2019/day/12)
 

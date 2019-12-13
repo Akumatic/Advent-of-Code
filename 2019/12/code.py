@@ -12,23 +12,22 @@ def cmp(a,b):
 
 class Moon:
     def __init__(self, pos):
-        self.pos = [pos[0], pos[1], pos[2]]
+        self.pos = list(pos)
         self.vel = [0] * 3
 
     def changeGravity(self, other):
-        x,y,z = cmp(self.pos[0], other.pos[0]), cmp(self.pos[1], other.pos[1]), cmp(self.pos[2], other.pos[2])
-        self.vel[0], other.vel[0] = self.vel[0] - x, other.vel[0] + x
-        self.vel[1], other.vel[1] = self.vel[1] - y, other.vel[1] + y
-        self.vel[2], other.vel[2] = self.vel[2] - z, other.vel[2] + z
+        for i in range(3):
+            d = cmp(self.pos[i], other.pos[i])
+            self.vel[i] -= d
+            other.vel[i] += d
 
     def move(self):
-        self.pos[0] += self.vel[0]
-        self.pos[1] += self.vel[1]
-        self.pos[2] += self.vel[2]
+        for i in range(3):
+            self.pos[i] += self.vel[i]
 
     def energy(self):
-        pot = abs(self.pos[0]) + abs(self.pos[1]) + abs(self.pos[2])
-        kin = abs(self.vel[0]) + abs(self.vel[1]) + abs(self.vel[2])
+        pot = sum([abs(p) for p in self.pos])
+        kin = sum([abs(v) for v in self.vel])
         return pot, kin, pot * kin
 
 def simulate(moons : list, steps = 1):
@@ -46,21 +45,21 @@ def lcm(x, y):
     return tmp // x
         
 def part1(vals: list):
-    moons = [Moon((val[0], val[1], val[2])) for val in vals]
+    moons = [Moon(val) for val in vals]
     simulate(moons, 1000)
     return sum([moon.energy()[2] for moon in moons])
 
 def part2(vals: list):
     dims = [0, 0, 0]
     for i in range(3):
-        moons = [Moon((val[0], val[1], val[2])) for val in vals]
-        oPos = [moons[0].pos[i], moons[1].pos[i], moons[2].pos[i], moons[3].pos[i]]
+        moons = [Moon(val) for val in vals]
+        oPos = [moon.pos[i] for moon in moons]
 
         while 1:
             simulate(moons)
             dims[i] += 1
-            if [moons[0].pos[i], moons[1].pos[i], moons[2].pos[i], moons[3].pos[i]] == oPos and \
-                [moons[0].vel[i], moons[1].vel[i], moons[2].vel[i], moons[3].vel[i]] == [0, 0, 0, 0]:
+            if [moon.pos[i] for moon in moons] == oPos and \
+                [moon.vel[i] for moon in moons] == [0, 0, 0, 0]:
                 break
 
     return lcm(dims[0], lcm(dims[1], dims[2]))
@@ -69,10 +68,9 @@ def test():
     moons = [Moon(p) for p in ((-1,0,2), (2,-10,-7), (4,-8,8), (3,5,-1))]
     simulate(moons, 10)
     assert sum([moon.energy()[2] for moon in moons]) == 179
-    vpos, vvel = ((2,1,-3),(1,-8,0),(3,-6,1),(2,0,4)), ((-3,-2,1),(-1,1,3),(3,2,-3),(1,-1,-1))
+    vpos, vvel = ([2,1,-3],[1,-8,0],[3,-6,1],[2,0,4]), ([-3,-2,1],[-1,1,3],[3,2,-3],[1,-1,-1])
     for i in range(4):
-        assert vpos[i] == (moons[i].pos[0], moons[i].pos[1] ,moons[i].pos[2]) and \
-            vvel[i] == (moons[i].vel[0], moons[i].vel[1], moons[i].vel[2])
+        assert vpos[i] == moons[i].pos and vvel[i] == moons[i].vel
     moons = [Moon(p) for p in ((-8,-10,0), (5,5,10), (2,-7,3), (9,-8,-3))]    
     simulate(moons,100)
     assert sum([moon.energy()[2] for moon in moons]) == 1940
