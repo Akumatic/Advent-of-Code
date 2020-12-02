@@ -1,13 +1,16 @@
-""" https://adventofcode.com/2019/day/1 """
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2019 Akumatic
+#
+# https://adventofcode.com/2019/day/1
 
-def readFile():
+def readFile() -> list:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return [int(line[:-1]) for line in f.readlines()]
 
-def part1(vals : list):
+def part1(vals: list) -> int:
     return sum([val // 3 - 2 for val in vals])
 
-def part2(vals : list):
+def part2(vals: list) -> int:
     fuel = [val // 3 - 2 for val in vals]
     for f in fuel:
         temp = f // 3 - 2

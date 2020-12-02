@@ -1,30 +1,27 @@
-""" https://adventofcode.com/2019/day/2 """
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2019 Akumatic
+#
+# https://adventofcode.com/2019/day/2
 
-def readFile():
+import sys, os
+sys.path.insert(1, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import intcode
+
+def readFile() -> list:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return [int(num) for num in f.readline().split(",")]
 
-def getOutput(vals : list):
-    for i in range(0, len(vals), 4):
-        if vals[i] == 99:
-            break
-        elif vals[i] == 1:
-            vals[vals[i+3]] = vals[vals[i+1]] + vals[vals[i+2]]
-        else: # vals[i] == 2
-            vals[vals[i+3]] = vals[vals[i+1]] * vals[vals[i+2]]
-    return vals[0]
-
-def part1(vals : list):
+def part1(vals: list) -> int:
     memory = vals.copy()
     memory[1], memory[2] = 12, 2
-    return getOutput(memory)
+    return intcode.getOutput(memory)
 
-def part2(vals : list):
+def part2(vals: list) -> int:
     for noun in range(100):
         for verb in range(100):
             memory = vals.copy()
             memory[1], memory[2] = noun, verb
-            if getOutput(memory) == 19690720:
+            if intcode.getOutput(memory) == 19690720:
                 return 100 * noun + verb
 
 if __name__ == "__main__":

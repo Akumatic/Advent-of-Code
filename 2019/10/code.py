@@ -1,31 +1,25 @@
-""" https://adventofcode.com/2019/day/10 """
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2019 Akumatic
+# 
+# https://adventofcode.com/2019/day/10
 
-from math import atan2, sqrt, pi
+from asteroid import Asteroid
+from math import pi
 
-def readFile():
+def readFile() -> list:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return [line[:-1] for line in f.readlines()]
 
-class Asteroid:
-    def __init__(self, x: int, y: int, ox: int, oy: int):
-        self.x = x
-        self.y = y
-        self.dist = sqrt((x - ox)**2 + (y - oy)**2)
-        self.angle = atan2(y - oy, x - ox)
-    
-    def __str__(self):
-        return str((self.x, self.y))
-
-def getAsteroids(field: list, x: int, y: int):
+def getAsteroids(field: list, x: int, y: int) -> list:
     return [Asteroid(i,j,x,y) for j in range(len(field)) 
         for i in range(len(field[j])) if field[j][i] != "." and (i,j) != (x,y)]
 
-def getVisibleAsteroids(field: list, x: int, y: int):
+def getVisibleAsteroids(field: list, x: int, y: int) -> int:
     asteroids = getAsteroids(field, x, y)
     angles = set([asteroid.angle for asteroid in asteroids])
     return len(angles)
 
-def part1(vals: list):
+def part1(vals: list) -> tuple:
     mx, my, max = 0, 0, 0
     for y in range(len(vals)):
         for x in range(len(vals[0])):
@@ -36,14 +30,13 @@ def part1(vals: list):
                 mx, my, max = x, y, tmp
     return mx, my, max
 
-def selectStart(indices, current):
+def selectStart(indices: list, current: float) -> int:
     i = 0
     while indices[i] < current:
         i += 1
     return i + 1
-    
 
-def part2(vals: list, x: int, y: int, count):
+def part2(vals: list, x: int, y: int, count: int) -> int:
     asteroids = getAsteroids(vals, x, y)
     d = dict()
     for asteroid in asteroids:

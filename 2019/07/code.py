@@ -1,101 +1,16 @@
-""" https://adventofcode.com/2019/day/7 """
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2019 Akumatic
+# 
+# https://adventofcode.com/2019/day/7
 
-import queue, itertools
+from itertools import permutations
+from amp import Amp
 
-class InvalidOpcode(Exception):
-    pass
-
-def readFile():
+def readFile() -> list:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return [int(num) for num in f.readline().split(",")]
 
-class Amp:
-    def __init__(self, vals, phase):
-        self.vals = vals.copy()
-        self.phase = phase
-        self.queue = queue.Queue()
-        self.output, self.prev, self.next = None, None, None
-        self.phased, self.term = False, False
-        self.i = 0
-
-    def run(self):
-        while 1:
-            opcode = (self.vals[self.i] % 100, self.vals[self.i] // 100 % 10, 
-                self.vals[self.i] // 1000 % 10, self.vals[self.i] // 10000 % 10)
-
-            # 99 : Termination
-            # 0 Parameter
-            if opcode[0] == 99:
-                self.output = self.vals[0]
-                self.term = True
-                break
-
-            # 1 : Addition
-            # 3 parameter
-            elif opcode[0] == 1:
-                a = self.vals[self.i+1] if opcode[1] == 0 else self.i+1
-                b = self.vals[self.i+2] if opcode[2] == 0 else self.i+2
-                self.vals[self.vals[self.i+3]] = self.vals[a] + self.vals[b]
-                self.i += 4
-
-            # 2 : Multiplication
-            # 3 parameter
-            elif opcode[0] == 2:
-                a = self.vals[self.i+1] if opcode[1] == 0 else self.i+1
-                b = self.vals[self.i+2] if opcode[2] == 0 else self.i+2
-                self.vals[self.vals[self.i+3]] = self.vals[a] * self.vals[b]
-                self.i += 4
-
-            # 3 : Input
-            # 1 parameter
-            elif opcode[0] == 3: 
-                if self.phased:
-                    try:
-                        if self.prev and self.prev.output:
-                            self.vals[self.vals[self.i+1]] =  self.prev.output
-                        else:
-                            self.vals[self.vals[self.i+1]] =  self.queue.get(block=False)
-                    except queue.Empty:
-                        break
-                else:
-                    self.vals[self.vals[self.i+1]], self.phased = self.phase, True
-                self.i += 2
-
-            # 4 : Output
-            # 1 parameter
-            elif opcode[0] == 4: 
-                a = self.vals[self.i+1] if opcode[1] == 0 else self.i+1
-                self.vals[0] = self.vals[a]
-                if self.next:
-                    self.next.queue.put(self.vals[0])
-                self.i += 2
-
-            # 5 : Jump-if-true
-            # 6 : Jump-if-false
-            # 2 parameter
-            elif opcode[0] in [5, 6]:
-                a = self.vals[self.i+1] if opcode[1] == 0 else self.i+1
-                if opcode[0] == 5 and self.vals[a] or \
-                opcode[0] == 6 and not self.vals[a]:
-                    b = self.vals[self.i+2] if opcode[2] == 0 else self.i+2
-                    self.i = self.vals[b]
-                else:
-                    self.i += 3
-
-            # 7 : less-than
-            # 8 : equals
-            # 3 parameter
-            elif opcode[0] in [7, 8]:
-                a = self.vals[self.i+1] if opcode[1] == 0 else self.i+1
-                b = self.vals[self.i+2] if opcode[2] == 0 else self.i+2
-                self.vals[self.vals[self.i+3]] = 1 if opcode[0] == 7 and self.vals[a] < \
-                    self.vals[b] or opcode[0] == 8 and self.vals[a] == self.vals[b] else 0
-                self.i += 4
-            
-            else:
-                raise InvalidOpcode
-
-def amplify(vals : list, phaseSettings : tuple):
+def amplify(vals: list, phaseSettings: tuple) -> int:
     amps = [Amp(vals, phaseSettings[i]) for i in range(5)]
     amps[0].queue.put(0)
     
@@ -117,11 +32,11 @@ def amplify(vals : list, phaseSettings : tuple):
 
     return amps[4].output
 
-def part1(vals : list):
-    return max([amplify(vals, (a, b, c, d, e)) for a,b,c,d,e in itertools.permutations([x for x in range(5)])])
+def part1(vals: list) -> int:
+    return max([amplify(vals, (a, b, c, d, e)) for a,b,c,d,e in permutations([x for x in range(5)])])
 
-def part2(vals : list):
-    return max([amplify(vals, (a, b, c, d, e)) for a,b,c,d,e in itertools.permutations([x for x in range(5,10)])])
+def part2(vals: list) -> int:
+    return max([amplify(vals, (a, b, c, d, e)) for a,b,c,d,e in permutations([x for x in range(5,10)])])
 
 def test():
     vals = [3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0]

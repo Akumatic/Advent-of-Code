@@ -1,10 +1,13 @@
-""" https://adventofcode.com/2019/day/4 """
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2019 Akumatic
+#
+# https://adventofcode.com/2019/day/4
 
-def readFile():
+def readFile() -> list:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return [int(vals) for vals in f.readline().split("-")]
 
-def getNumbers(min, max):
+def getNumbers(min: int, max: int) -> set:
     result = set()
     for i in range(min, max+1):
         nums = [i // 100000, (i // 10000) % 10, (i // 1000) % 10, 
@@ -13,28 +16,28 @@ def getNumbers(min, max):
             result.add(i)
     return result
 
-def isNotDecreasing(nums):
+def isNotDecreasing(nums: list) -> bool:
     for x in range(1, 6):
         if nums[x] < nums[x - 1]: 
             return False
     return True
 
-def hasDoubleAdjacentValue(nums):
+def hasDoubleAdjacentValue(nums: list) -> bool:
     for x in range(1, 5):
         if nums[x] == nums[x - 1] or nums[x] == nums[x + 1]:
             return True
     return False
 
-def isNotPartOfBiggerGroup(nums):
+def isNotPartOfBiggerGroup(nums: list) -> bool:
     for x in range(1, 6):
         if nums[x] == nums[x - 1] and nums.count(nums[x]) == 2:
             return True
     return False
 
-def part1(vals : list):
+def part1(vals : list) -> int:
     return len(getNumbers(vals[0], vals[1]))
 
-def part2(vals : list):
+def part2(vals : list) -> int:
     result = set()
     numbers = getNumbers(vals[0], vals[1] + 1)
     for i in numbers:

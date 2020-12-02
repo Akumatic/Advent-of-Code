@@ -1,29 +1,15 @@
-""" https://adventofcode.com/2019/day/3 """
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2019 Akumatic
+#
+# https://adventofcode.com/2019/day/3
 
-def readFile():
+from wire import Wire
+
+def readFile() -> list:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return [Wire(val for val in line[:-1].split(",")) for line in f.readlines()]
 
-class Wire:
-    def __init__(self, input):
-        self.input = input
-        self.fields = {(0, 0, 0)}
-        self.__initFields()
-
-    def __initFields(self):
-        x, y, step = 0, 0, 0
-        for i in self.input:
-            dir = i[0]
-            len = int(i[1:])
-            dx = 1 if dir == "R" else -1 if dir == "L" else 0
-            dy = 1 if dir == "U" else -1 if dir == "D" else 0
-            for r in range(0, len):
-                x += dx
-                y += dy
-                step += 1
-                self.fields.add((x, y, step))
-        
-def getIntersections(a , b):
+def getIntersections(a, b) -> set:
     intersections = set()
     bFields = {(val[0], val[1]) for val in b.fields}
     for point in a.fields:
@@ -31,12 +17,12 @@ def getIntersections(a , b):
             intersections.add(point)
     return intersections
 
-def getIntersectionDistance(intersections, i):
+def getIntersectionDistance(intersections, i) -> int:
     for intersection in intersections:
         if intersection[0] == i[0] and intersection[1] == i[1]:
             return intersection[2]
                 
-def part1(vals : list):
+def part1(vals: list) -> int:
     intersections = getIntersections(vals[0], vals[1])
     dists = []
     for i in intersections:
@@ -44,7 +30,7 @@ def part1(vals : list):
     dists.sort()
     return dists[1]
 
-def part2(vals : list):
+def part2(vals: list) -> int:
     intersections = getIntersections(vals[0], vals[1])
     intersections2 = getIntersections(vals[1], vals[0])
     steps = []

@@ -1,16 +1,19 @@
-""" https://adventofcode.com/2019/day/6 """
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2019 Akumatic
+# 
+# https://adventofcode.com/2019/day/6
 
-def readFile():
+def readFile() -> dict:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         lines = [data[:-1].split(")") for data in f.readlines()]
-    return {line[1] : line[0] for line in lines}
+    return {line[1]: line[0] for line in lines}
 
-def countOrbits(data, cache, node):
+def countOrbits(data: dict, cache: dict, node: str) -> int:
     if node in cache: return cache[node]
     cache[node] = 0 if node not in data else 1 + countOrbits(data,cache,data[node])
     return cache[node]
 
-def getIntersection(data, cache, node1, node2):
+def getIntersection(data: dict, cache: dict, node1: str, node2: str) -> str:
     if cache[node1] > cache[node2]: node1, node2 = node2, node1
     parents = set()
     # get elements of shorter path
@@ -23,10 +26,10 @@ def getIntersection(data, cache, node1, node2):
         node2 = data[node2]
     return node2
 
-def part1(vals : dict, cache):
+def part1(vals : dict, cache) -> int:
     return sum([countOrbits(vals,cache,val) for val in vals])
 
-def part2(vals : dict, cache):
+def part2(vals : dict, cache) -> int:
     intersection = getIntersection(vals,cache,"YOU","SAN")
     return cache["YOU"] + cache["SAN"] - 2*cache[intersection] - 2
 

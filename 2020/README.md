@@ -15,7 +15,7 @@ Collect stars by solving puzzles. Two puzzles will be made available on each day
 
 | Day | Part 1 | Part 2 ||Day | Part 1 | Part 2 |
 | --- | --- | --- |---| --- | --- | --- |
-| 01 | :white_check_mark: | :white_check_mark: || 02 |  |  |
+| 01 | :white_check_mark: | :white_check_mark: || 02 | :white_check_mark: | :white_check_mark: |
 | 03 |  |  || 04 |  |  |
 | 05 |  |  || 06 |  |  |
 | 07 |  |  || 08 |  |  |
