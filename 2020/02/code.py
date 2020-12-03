@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2020 Akumatic
-""" https://adventofcode.com/2020/day/2 """
+#
+# https://adventofcode.com/2020/day/2
 
 def readFile() -> list:
     input = list()
