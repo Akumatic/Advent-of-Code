@@ -5,26 +5,28 @@
 
 import sys, os
 sys.path.insert(1, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import intcode
+import intcode, intcode_test
 
 def readFile() -> list:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return [int(num) for num in f.readline().split(",")]
 
-def part1(vals: list) -> int:
-    memory = vals.copy()
-    memory[1], memory[2] = 12, 2
-    return intcode.getOutput(memory)
+def part1(pc: intcode.Computer) -> int:
+    pc.data[1], pc.data[2] = 12, 2
+    pc.run()
+    return pc.data[0]
 
-def part2(vals: list) -> int:
+def part2(pc: intcode.Computer) -> int:
     for noun in range(100):
         for verb in range(100):
-            memory = vals.copy()
-            memory[1], memory[2] = noun, verb
-            if intcode.getOutput(memory) == 19690720:
+            pc.reset()
+            pc.data[1], pc.data[2] = noun, verb
+            pc.run()
+            if pc.data[0] == 19690720:
                 return 100 * noun + verb
 
 if __name__ == "__main__":
-    vals = readFile()
-    print(f"Part 1: {part1(vals)}")
-    print(f"Part 2: {part2(vals)}")
+    intcode_test.test_02()
+    pc = intcode.Computer(readFile())
+    print(f"Part 1: {part1(pc)}")
+    print(f"Part 2: {part2(pc)}")
