@@ -3,35 +3,36 @@
 #
 # https://adventofcode.com/2020/day/4
 
-import passport
+import re
 
 def readFile() -> list:
-    with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
-        return [line[:-1] for line in f.readlines()]
-
-def parse_data(vals: list) -> list:
     result = list()
-    cur = list()
-    for line in vals:
-        if line:
-            cur += line.split(" ")
-        else:
-            result.append(passport.Pass(cur))
-            cur.clear()
-            
-    # since last line is not "", add data from cur once more
-    result.append(passport.Pass(cur))
+    with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
+        for data in f.read()[:-1].split("\n\n"):
+            result.append(dict(d.split(":") for d in data.replace("\n", " ").split()))
     return result
 
-def part1(passports: list) -> int:
-    return sum(p.valid_fields() for p in passports)
+def assert_fields(data: dict) -> bool:
+    return all((k in data for k in ("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")))
 
-def part2(passports: list) -> int:
-    return sum(p.valid_data() for p in passports)
+def part1(vals: list) -> tuple:
+    return len(vals)
+
+def part2(vals: list) -> int:
+    patterns = {
+        "byr": "^19[2-9][0-9]|200[0-2]$",
+        "iyr": "^20(1[0-9]|20)$",
+        "eyr": "^20(2[0-9]|30)$",
+        "hgt": "^1([5-8][0-9]|9[0-3])cm|(59|6[0-9]|7[0-6])in$",
+        "hcl": "^#[0-9a-f]{6}$",
+        "ecl": "^(amb|blu|brn|gry|grn|hzl|oth)$",
+        "pid": "^[0-9]{9}$",
+        "cid": ".*"
+    }
+    return sum([all([bool(re.match(patterns[v], val[v])) for v in val]) for val in vals])
 
 if __name__ == "__main__":
-    from test_code import test
-    test()
-    passports = parse_data(readFile())
-    print(f"Part 1: {part1(passports)}")
-    print(f"Part 2: {part2(passports)}")
+    vals = readFile()
+    valid_passes = [val for val in vals if assert_fields(val)]
+    print(f"Part 1: {part1(valid_passes)}")
+    print(f"Part 2: {part2(valid_passes)}")
