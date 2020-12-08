@@ -27,5 +27,5 @@ def test():
     rules, amount = parseRules(input)
     assert part2(rules, amount) == 126
 
-if __name__ == "__name__":
+if __name__ == "__main__":
     test()
