@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2020 Akumatic
 
-from code import part1, part2, iterate
+from code import part1, part2, iterate, create_cache
 
 def test():
     input = [['L', '.', 'L', 'L', '.', 'L', 'L', '.', 'L', 'L'],
@@ -14,7 +14,8 @@ def test():
         ['L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'],
         ['L', '.', 'L', 'L', 'L', 'L', 'L', 'L', '.', 'L'],
         ['L', '.', 'L', 'L', 'L', 'L', 'L', '.', 'L', 'L']]
-    assert iterate(input) == [
+    cache = create_cache(input)
+    assert iterate(input, cache) == [
         ['#', '.', '#', 'L', '.', 'L', '#', '.', '#', '#'],
         ['#', 'L', 'L', 'L', '#', 'L', 'L', '.', 'L', '#'],
         ['L', '.', '#', '.', 'L', '.', '.', '#', '.', '.'],
@@ -25,7 +26,7 @@ def test():
         ['#', 'L', '#', 'L', '#', '#', 'L', '#', 'L', '#'],
         ['#', '.', 'L', 'L', 'L', 'L', 'L', 'L', '.', 'L'],
         ['#', '.', '#', 'L', '#', 'L', '#', '.', '#', '#']]
-    assert iterate(input, adjacent=False) == [
+    assert iterate(input, cache, adjacent=False) == [
         ['#', '.', 'L', '#', '.', 'L', '#', '.', 'L', '#'],
         ['#', 'L', 'L', 'L', 'L', 'L', 'L', '.', 'L', 'L'],
         ['L', '.', 'L', '.', 'L', '.', '.', '#', '.', '.'],
@@ -36,8 +37,8 @@ def test():
         ['L', 'L', 'L', '#', '#', '#', 'L', 'L', 'L', '#'],
         ['#', '.', 'L', 'L', 'L', 'L', 'L', '#', '.', 'L'],
         ['#', '.', 'L', '#', 'L', 'L', '#', '.', 'L', '#']]
-    assert part1(input) == 37
-    assert part2(input) == 26
+    assert part1(input, cache) == 37
+    assert part2(input, cache) == 26
     print("Passed tests for", input)
 
 if __name__ == "__main__":
