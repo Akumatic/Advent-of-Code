@@ -8,20 +8,12 @@ def readFile() -> tuple:
         return [int(num) for num in f.readline().split(",")]
 
 def play(input: list, turns: int) -> int:
-    mem = {val: [idx + 1] for idx, val in enumerate(input)}
+    mem = {val: idx + 1 for idx, val in enumerate(input)}
     prev = input[-1]
     for turn in range(len(input) + 1, turns + 1):
-        # set last spoken number
-        if prev not in mem or len(mem[prev]) == 1:
-            prev = 0
-        else: 
-            prev = mem[prev][-1] - mem[prev][-2]
-        # store the counter
-        if prev in mem:
-            mem[prev].append(turn)
-        else:
-            mem[prev] = [turn]
-
+        next = 0 if prev not in mem else turn - 1 - mem[prev]
+        mem[prev] = turn - 1
+        prev = next
     return prev
 
 def part1(input: list) -> int:
