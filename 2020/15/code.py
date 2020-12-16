@@ -3,7 +3,7 @@
 #
 #https://adventofcode.com/2020/day/15
 
-def readFile() -> tuple:
+def readFile() -> list:
     with open(f"{__file__.rstrip('code.py')}input.txt", "r") as f:
         return [int(num) for num in f.readline().split(",")]
 
