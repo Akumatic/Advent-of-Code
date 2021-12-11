@@ -1,6 +1,8 @@
-# 2021 Day 09: Smoke Basin
+# 2021 Day 10: Syntax Scoring
 Copyright (c) Eric Wastl
 #### [Direct Link](https://adventofcode.com/2021/day/10)
+
+## Part 1
 
 You ask the submarine to determine the best route out of the deep-sea cave, but it only replies:
 
