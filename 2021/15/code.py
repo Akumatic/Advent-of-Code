@@ -13,15 +13,18 @@ def read_file(filename: str = "input.txt") -> tuple:
         data += [int(x) for x in line]
     return len(lines[0]), data
 
-def get_neighbor_idx(idx: int, dim: int) -> list:
-    y = idx // dim
-    x = idx - y * dim
-    neighbors = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
-    return [n[0] + n[1]*dim for n in neighbors if 0 <= n[0] < dim and 0 <= n[1] < dim]
+def get_neighbors(dim: int) -> dict:
+    neighbors = dict()
+    for y in range(dim):
+        for x in range(dim):
+            neighbors[x + y*dim] = [x + d[0] + (y + d[1]) * dim for d in ((-1, 0), (1, 0), (0, -1), (0, 1))
+                if 0 <= x + d[0] < dim and 0 <= y + d[1] < dim]
+    return neighbors
 
 def dijkstra(cavern: tuple) -> dict:
     dimension, graph = cavern[0], cavern[1]
     graph_size = len(graph)
+    neighbors = get_neighbors(dimension)
     queue = PriorityQueue()
     queue.put((0, 0))
     dist = {0: 0}
@@ -29,7 +32,7 @@ def dijkstra(cavern: tuple) -> dict:
     while not queue.empty():
         distance, idx = queue.get()
 
-        for neighbor in get_neighbor_idx(idx, dimension):
+        for neighbor in neighbors[idx]:
             d = distance + graph[neighbor]
             if neighbor not in dist or dist[neighbor] > d:
                 dist[neighbor] = d
@@ -44,8 +47,7 @@ def expand(cavern: tuple) -> tuple:
     for y in range(dim):
         for i in range(5):
             for x in range(dim):
-                idx = x + y * dim
-                val = cavern[1][idx] + i
+                val = cavern[1][x + y * dim] + i
                 if val > 9:
                     val -= 9
                 tmp.append(val)
