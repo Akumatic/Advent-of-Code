@@ -30,7 +30,7 @@ Collect stars by solving puzzles. Two puzzles will be made available on each day
 | 13 | :white_check_mark: | :white_check_mark: | [Solution](13/code.py) | [Day 13](https://adventofcode.com/2021/day/13) |
 | 14 | :white_check_mark: | :white_check_mark: | [Solution](14/code.py) | [Day 14](https://adventofcode.com/2021/day/14) |
 | 15 | :white_check_mark: | :white_check_mark: | [Solution](15/code.py) | [Day 15](https://adventofcode.com/2021/day/15) |
-| 16 |  |  |  |  |
+| 16 | :white_check_mark: | :white_check_mark: | [Solution](16/code.py) | [Day 16](https://adventofcode.com/2021/day/16) |
 | 17 |  |  |  |  |
 | 18 |  |  |  |  |
 | 19 |  |  |  |  |
