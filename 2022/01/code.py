@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2022 Akumatic
 #
-# https://adventofcode.com/2022/day/01
+# https://adventofcode.com/2022/day/1
 
 def read_file(filename: str = "input.txt") -> list:
     with open(f"{__file__.rstrip('code.py')}{filename}", "r") as f:
