@@ -23,7 +23,7 @@ Collect stars by solving puzzles. Two puzzles will be made available on each day
 | 06 | :white_check_mark: | :white_check_mark: | [Solution](06/code.py) | [Day 06](https://adventofcode.com/2022/day/6) |
 | 07 | :white_check_mark: | :white_check_mark: | [Solution](07/code.py) | [Day 07](https://adventofcode.com/2022/day/7) |
 | 08 | :white_check_mark: | :white_check_mark: | [Solution](08/code.py) | [Day 08](https://adventofcode.com/2022/day/8) |
-| 09 |  |  |  | [Day 09](https://adventofcode.com/2022/day/9) |
+| 09 | :white_check_mark: | :white_check_mark: | [Solution](09/code.py) | [Day 09](https://adventofcode.com/2022/day/9) |
 | 10 |  |  |  | [Day 10](https://adventofcode.com/2022/day/10) |
 | 11 |  |  |  | [Day 11](https://adventofcode.com/2022/day/11) |
 | 12 |  |  |  | [Day 12](https://adventofcode.com/2022/day/12) |
